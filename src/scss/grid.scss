@@ -1,0 +1,65 @@
+@import 'config';
+
+$single_column: 100% / $max_columns;
+
+@for $i from 2 through $max_columns {
+  .l-grid[data-cols='#{$i}'] {
+    .l-grid__item {
+      $width: (100% / $i);
+      width: calc(#{$width} - #{$gutter_h});
+
+      @media(max-width: $small) {
+        width: 100%;
+      }
+
+      @for $n from 2 through $max_columns {
+        &[data-span='#{$n}'] {
+          $span_width: $single_column * $n;
+          $span_gutter: $gutter_h * $n;
+
+          width: calc(#{$span_width} - #{$span_gutter});
+        }
+      }
+    }
+
+    &[data-collapse='medium'] {
+      @media(max-width: $medium) {
+        .l-grid__item {
+          width: 100%;
+        }
+      }
+    }
+
+    &[data-collapse='max'] {
+      @media(max-width: $max) {
+        .l-grid__item {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.l-grid {
+  overflow: hidden;
+}
+
+.l-grid__inner {
+  margin: 0 (-($gutter_h / 2));
+
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+.l-grid__item {
+  position: relative;
+  float: left;
+  margin: 0 ($gutter_h / 2) $gutter_v;
+
+  &, &:before, &:after {
+    box-sizing: border-box;
+  }
+}
